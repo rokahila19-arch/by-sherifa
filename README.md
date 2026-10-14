@@ -18,7 +18,7 @@ npm run deploy
 ```
 
 Compile l'application avec la bonne `base-href` et publie `dist/stock-chine/browser` sur la branche `gh-pages`.
-Site : https://jonatecht.github.io/stock-chine-by-cherifa/
+Site : https://rokahila19-arch.github.io/by-sherifa/
 
 ## Modifier le catalogue
 

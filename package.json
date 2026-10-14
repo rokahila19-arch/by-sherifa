@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --base-href /stock-chine-by-cherifa/ && npx angular-cli-ghpages --dir=dist/stock-chine/browser --no-silent"
+    "deploy": "ng build --base-href /by-sherifa/ && npx angular-cli-ghpages --dir=dist/stock-chine/browser --no-silent"
   },
   "prettier": {
     "printWidth": 100,
