@@ -75,7 +75,7 @@ const PAGE_SIZE = 20;
           <a routerLink="/produits" [queryParams]="{ flash: 1 }">Voir tout ›</a>
         </div>
         <div class="h-scroll">
-          @for (p of flash; track p.id) { <app-product-card [product]="p" /> }
+          @for (p of flash(); track p.id) { <app-product-card [product]="p" /> }
         </div>
       </section>
 
@@ -92,7 +92,7 @@ const PAGE_SIZE = 20;
       <section class="section">
         <div class="section-head"><h2><fa-icon class="hot" [icon]="i.faFire" /> Meilleures ventes</h2><a routerLink="/produits" [queryParams]="{ tri: 'ventes' }">Voir tout ›</a></div>
         <div class="h-scroll">
-          @for (p of best; track p.id) { <app-product-card [product]="p" /> }
+          @for (p of best(); track p.id) { <app-product-card [product]="p" /> }
         </div>
       </section>
 
@@ -100,7 +100,7 @@ const PAGE_SIZE = 20;
       <section class="section">
         <div class="section-head"><h2><fa-icon class="hot" [icon]="i.faWandMagicSparkles" /> Nouveautés</h2><a routerLink="/produits" [queryParams]="{ tri: 'nouveautes' }">Voir tout ›</a></div>
         <div class="h-scroll">
-          @for (p of fresh; track p.id) { <app-product-card [product]="p" /> }
+          @for (p of fresh(); track p.id) { <app-product-card [product]="p" /> }
         </div>
       </section>
 
@@ -118,7 +118,7 @@ const PAGE_SIZE = 20;
       <div class="product-grid">
         @for (p of forYou(); track p.id) { <app-product-card [product]="p" /> }
       </div>
-      @if (forYou().length < feed.length) {
+      @if (forYou().length < feed().length) {
         <div class="more"><button class="btn btn-outline" type="button" (click)="shown.update(n => n + 20)">Voir plus d'articles</button></div>
       }
     </div>
@@ -159,12 +159,14 @@ export class Home {
   protected readonly i = icons;
   protected readonly history = inject(HistoryService);
 
-  protected readonly flash = this.catalog.flashSales();
-  protected readonly best = this.catalog.bestSellers();
-  protected readonly fresh = this.catalog.newArrivals();
-  protected readonly feed = [...this.catalog.products].sort((a, b) => (a.id * 7919) % 97 - (b.id * 7919) % 97);
+  protected readonly flash = this.catalog.flashSales;
+  protected readonly best = this.catalog.bestSellers;
+  protected readonly fresh = this.catalog.newArrivals;
+  protected readonly feed = computed(() =>
+    [...this.catalog.products()].sort((a, b) => ((a.id * 7919) % 97) - ((b.id * 7919) % 97)),
+  );
   protected readonly shown = signal(PAGE_SIZE);
-  protected readonly forYou = computed(() => this.feed.slice(0, this.shown()));
+  protected readonly forYou = computed(() => this.feed().slice(0, this.shown()));
   protected readonly waWholesale = whatsappLink('Bonjour, je suis revendeur et je souhaite commander en gros.');
 
   protected readonly slides: Slide[] = [

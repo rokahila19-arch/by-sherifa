@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductCard } from '../components/product-card';
 import { CartService } from '../services/cart.service';
@@ -26,7 +26,7 @@ import * as icons from '../icons';
       <div class="stats">
         <a routerLink="/panier"><b>{{ cart.count() }}</b>Panier</a>
         <a routerLink="/favoris"><b>{{ favs.count() }}</b>Favoris</a>
-        <a routerLink="/produits"><b>{{ total }}</b>Articles</a>
+        <a routerLink="/produits"><b>{{ total() }}</b>Articles</a>
       </div>
 
       <section class="section">
@@ -64,6 +64,8 @@ import * as icons from '../icons';
           </div>
         </section>
       }
+
+      <a routerLink="/admin" class="admin-link"><fa-icon [icon]="i.faUserGear" /> Espace gérante</a>
     </div>
   `,
   styles: `
@@ -82,6 +84,7 @@ import * as icons from '../icons';
     .flag { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; }
     .contact .btn { height: 36px; font-size: 13px; padding: 0 14px; }
     .steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; color: var(--ink-2); }
+    .admin-link { display: block; text-align: center; margin: 24px 0 8px; color: var(--muted); font-size: 13px; }
     .note { background: #fff6ef; padding: 10px 12px; border-radius: 8px; font-size: 13px; margin: 14px 0 0; }
   `,
 })
@@ -91,7 +94,8 @@ export class Account {
   protected readonly cart = inject(CartService);
   protected readonly favs = inject(FavoritesService);
   protected readonly history = inject(HistoryService);
-  protected readonly total = inject(CatalogService).products.length;
+  protected readonly total = computed(() => this.catalog.products().length);
+  private readonly catalog = inject(CatalogService);
   protected readonly waBF = whatsappLink('Bonjour Stock Chine by Cherifa !');
   protected readonly waCN = whatsappLink('Bonjour, j\'aimerais faire un sourcing en Chine.', SHOP.whatsappCN);
 }

@@ -145,6 +145,9 @@
           </table>
         }
         @case ('avis') {
+          @if (!p.reviews) {
+            <p class="desc">Aucun avis pour l'instant. Soyez la première personne à donner votre avis après votre achat !</p>
+          } @else {
           <div class="review-summary">
             <b class="score">{{ p.rating }}</b>
             <div><span class="stars">@for (s of stars(p.rating); track $index) { <fa-icon [icon]="s" /> }</span><br />{{ p.reviews }} avis vérifiés</div>
@@ -155,6 +158,7 @@
               @if (r.variant) { <small class="variant">{{ r.variant }}</small> }
               <p>{{ r.text }}</p>
             </article>
+          }
           }
         }
       }
@@ -176,6 +180,8 @@
     <button type="button" class="btn btn-dark" (click)="addToCart()">Ajouter au panier</button>
     <button type="button" class="btn btn-brand" (click)="buyNow()">Acheter</button>
   </div>
+} @else if (catalog.loading()) {
+  <div class="container page"><div class="empty"><p>Chargement de l'article…</p></div></div>
 } @else {
   <div class="container page">
     <div class="empty">

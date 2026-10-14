@@ -36,6 +36,8 @@ export interface Category {
   name: string;
   icon: IconDefinition;
   image: string;
+  /** Tailles proposées par défaut dans le formulaire d'ajout. */
+  sizes?: string[];
 }
 
 export interface CartItem {

@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { CATEGORIES } from '../data/categories.data';
 import { PRODUCTS } from '../data/products.data';
 import { Category, Product } from '../models/product';
+import { loadJson, saveJson } from './storage';
+import { ProductRow, rowToProduct, SupabaseService } from './supabase.service';
 
 export type SortKey = 'pertinence' | 'prix-asc' | 'prix-desc' | 'ventes' | 'note' | 'nouveautes';
 
@@ -15,45 +17,80 @@ export interface ProductQuery {
   sort?: SortKey;
 }
 
+const CACHE_KEY = 'sc-products-cache';
+
 const normalize = (s: string) =>
   s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 @Injectable({ providedIn: 'root' })
 export class CatalogService {
-  readonly categories = CATEGORIES;
-  readonly products = PRODUCTS;
+  private readonly supabase = inject(SupabaseService);
 
-  private readonly byId = new Map(PRODUCTS.map((p) => [p.id, p]));
+  readonly categories = CATEGORIES;
+
+  /**
+   * Catalogue affiché. Avec Supabase : dernier catalogue mis en cache (affichage instantané),
+   * remplacé dès que la base répond. Sans Supabase : catalogue embarqué.
+   */
+  readonly products = signal<Product[]>(
+    this.supabase.enabled ? loadJson<Product[]>(CACHE_KEY, []) : PRODUCTS,
+  );
+  /** Vrai tant que le catalogue n'a jamais été chargé sur cet appareil. */
+  readonly loading = signal(this.supabase.enabled && this.products().length === 0);
+
+  private readonly byId = computed(() => new Map(this.products().map((p) => [p.id, p])));
+
+  readonly flashSales = computed(() => this.products().filter((p) => p.flash && p.oldPrice));
+  readonly newArrivals = computed(() => this.products().filter((p) => p.isNew));
+  readonly bestSellers = computed(() =>
+    [...this.products()].sort((a, b) => b.sold - a.sold).slice(0, 12),
+  );
+
+  constructor() {
+    this.refresh();
+  }
+
+  /** Recharge le catalogue depuis Supabase (articles en ligne uniquement). */
+  async refresh(): Promise<void> {
+    const client = this.supabase.client;
+    if (!client) return;
+    const { data, error } = await client
+      .from('products')
+      .select('*')
+      .eq('active', true)
+      .order('created_at', { ascending: false });
+    if (error || !data) {
+      console.error('Catalogue indisponible', error);
+      // Hors ligne et jamais chargé : on affiche le catalogue embarqué.
+      if (!this.products().length) this.products.set(PRODUCTS);
+    } else {
+      const list = (data as ProductRow[]).map((r) => {
+        const { active: _active, ...product } = rowToProduct(r);
+        return product;
+      });
+      this.products.set(list);
+      saveJson(CACHE_KEY, list);
+    }
+    this.loading.set(false);
+  }
 
   getProduct(id: number): Product | undefined {
-    return this.byId.get(id);
+    return this.byId().get(id);
   }
 
   getCategory(slug: string | null | undefined): Category | undefined {
     return this.categories.find((c) => c.slug === slug);
   }
 
-  flashSales(): Product[] {
-    return this.products.filter((p) => p.flash && p.oldPrice);
-  }
-
-  newArrivals(): Product[] {
-    return this.products.filter((p) => p.isNew);
-  }
-
-  bestSellers(limit = 12): Product[] {
-    return [...this.products].sort((a, b) => b.sold - a.sold).slice(0, limit);
-  }
-
   similar(product: Product, limit = 12): Product[] {
-    return this.products
+    return this.products()
       .filter((p) => p.category === product.category && p.id !== product.id)
       .slice(0, limit);
   }
 
   query(q: ProductQuery): Product[] {
     const terms = q.search ? normalize(q.search).split(/\s+/).filter(Boolean) : [];
-    let list = this.products.filter((p) => {
+    let list = this.products().filter((p) => {
       if (q.category && p.category !== q.category) return false;
       if (q.minPrice != null && p.price < q.minPrice) return false;
       if (q.maxPrice != null && p.price > q.maxPrice) return false;

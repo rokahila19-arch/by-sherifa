@@ -1,0 +1,137 @@
+<div class="container page">
+  <div class="admin-head">
+    <a routerLink="/admin" class="back"><fa-icon [icon]="i.faChevronLeft" /> Mes articles</a>
+    <h1>{{ isEdit() ? 'Modifier l\'article' : 'Nouvel article' }}</h1>
+  </div>
+
+  @if (loading()) {
+    <p class="muted">Chargement…</p>
+  } @else {
+    @if (error()) { <p class="admin-error">{{ error() }}</p> }
+
+    <!-- Photos -->
+    <section class="admin-card">
+      <h2>Photos <small>(la 1re est la photo principale)</small></h2>
+      <div class="photos">
+        @for (url of images(); track url; let first = $first) {
+          <div class="photo" [class.main]="first">
+            <img [src]="url" alt="" />
+            @if (first) { <span class="main-tag">Principale</span> }
+            <button type="button" class="ph-btn del" (click)="removePhoto(url)" aria-label="Retirer la photo"><fa-icon [icon]="i.faXmark" /></button>
+            @if (!first) {
+              <button type="button" class="ph-btn star" (click)="makeMain(url)" aria-label="Mettre en principale"><fa-icon [icon]="i.faStar" /></button>
+            }
+          </div>
+        }
+        @for (n of uploadSlots(); track $index) {
+          <div class="photo loading"><fa-icon [icon]="i.faSpinner" animation="spin" /></div>
+        }
+        <label class="photo add">
+          <fa-icon [icon]="i.faCamera" />
+          <span>Ajouter</span>
+          <input type="file" accept="image/*" multiple (change)="addPhotos($event)" />
+        </label>
+      </div>
+    </section>
+
+    <!-- Infos -->
+    <section class="admin-card">
+      <h2>Informations</h2>
+      <label class="field">Nom de l'article *
+        <input [ngModel]="title()" (ngModelChange)="title.set($event)" name="title" placeholder="Ex : Hoodie oversize beige" />
+      </label>
+      <label class="field">Catégorie *
+        <select [ngModel]="category()" (ngModelChange)="setCategory($event)" name="category">
+          <option value="" disabled>Choisir…</option>
+          @for (c of catalog.categories; track c.slug) { <option [value]="c.slug">{{ c.name }}</option> }
+        </select>
+      </label>
+      <label class="field">Description
+        <textarea [ngModel]="description()" (ngModelChange)="description.set($event)" name="description" rows="4"
+          placeholder="Matière, coupe, conseils d'entretien…"></textarea>
+      </label>
+    </section>
+
+    <!-- Prix -->
+    <section class="admin-card">
+      <h2>Prix (FCFA)</h2>
+      <div class="grid2">
+        <label class="field">Prix de vente *
+          <input type="number" inputmode="numeric" min="0" [ngModel]="price()" (ngModelChange)="setPrice($event)" name="price" placeholder="7500" />
+        </label>
+        <label class="field">Ancien prix (barré)
+          <input type="number" inputmode="numeric" min="0" [ngModel]="oldPrice()" (ngModelChange)="oldPrice.set($event)" name="oldPrice" placeholder="Facultatif" />
+        </label>
+      </div>
+      @if (discount()) { <p class="hint">Réduction affichée : <b>-{{ discount() }}%</b></p> }
+      <div class="grid2">
+        <label class="field">Prix dès 10 pièces
+          <input type="number" inputmode="numeric" min="0" [ngModel]="tier10()" (ngModelChange)="setTier(10, $event)" name="tier10" />
+        </label>
+        <label class="field">Prix dès 50 pièces
+          <input type="number" inputmode="numeric" min="0" [ngModel]="tier50()" (ngModelChange)="setTier(50, $event)" name="tier50" />
+        </label>
+      </div>
+      <p class="hint">Les prix de gros sont proposés automatiquement (-12 % et -22 %), modifiables.</p>
+      <div class="grid2">
+        <label class="field">Stock disponible
+          <input type="number" inputmode="numeric" min="0" [ngModel]="stock()" (ngModelChange)="stock.set($event)" name="stock" />
+        </label>
+        <label class="field">Commande minimum
+          <input type="number" inputmode="numeric" min="1" [ngModel]="minOrder()" (ngModelChange)="minOrder.set($event)" name="minOrder" />
+        </label>
+      </div>
+    </section>
+
+    <!-- Tailles -->
+    <section class="admin-card">
+      <h2>Tailles</h2>
+      <div class="chips">
+        @for (s of suggestedSizes(); track s) {
+          <button type="button" class="chip" [class.active]="sizes().includes(s)" (click)="toggleSize(s)">{{ s }}</button>
+        }
+      </div>
+      <div class="inline">
+        <input [ngModel]="customSize()" (ngModelChange)="customSize.set($event)" name="customSize" placeholder="Autre taille (ex : 3XL, Taille unique)" (keydown.enter)="$event.preventDefault(); addCustomSize()" />
+        <button type="button" class="btn btn-outline" (click)="addCustomSize()"><fa-icon [icon]="i.faPlus" /></button>
+      </div>
+      <p class="hint">Aucune taille cochée = pas de choix de taille (sacs, bijoux…).</p>
+    </section>
+
+    <!-- Couleurs -->
+    <section class="admin-card">
+      <h2>Couleurs</h2>
+      <div class="swatches">
+        @for (c of palette; track c.name) {
+          <button type="button" class="swatch" [class.on]="hasColor(c.name)" (click)="toggleColor(c)">
+            <span [style.background]="c.hex"></span>{{ c.name }}
+          </button>
+        }
+        @for (c of extraColors(); track c.name) {
+          <button type="button" class="swatch on" (click)="toggleColor(c)"><span [style.background]="c.hex"></span>{{ c.name }}</button>
+        }
+      </div>
+      <div class="inline">
+        <input type="color" [ngModel]="customColorHex()" (ngModelChange)="customColorHex.set($event)" name="customColorHex" aria-label="Couleur" class="picker" />
+        <input [ngModel]="customColorName()" (ngModelChange)="customColorName.set($event)" name="customColorName" placeholder="Autre couleur (ex : Bordeaux)" (keydown.enter)="$event.preventDefault(); addCustomColor()" />
+        <button type="button" class="btn btn-outline" (click)="addCustomColor()"><fa-icon [icon]="i.faPlus" /></button>
+      </div>
+    </section>
+
+    <!-- Options -->
+    <section class="admin-card">
+      <h2>Mise en avant</h2>
+      <label class="switch"><input type="checkbox" [ngModel]="active()" (ngModelChange)="active.set($event)" name="active" /> <span>En ligne (visible sur le site)</span></label>
+      <label class="switch"><input type="checkbox" [ngModel]="isNew()" (ngModelChange)="isNew.set($event)" name="isNew" /> <span>Badge « Nouveau »</span></label>
+      <label class="switch"><input type="checkbox" [ngModel]="flash()" (ngModelChange)="flash.set($event)" name="flash" /> <span>Vente flash (nécessite un ancien prix)</span></label>
+    </section>
+
+    <div class="save-bar">
+      @if (price()) { <span class="preview">{{ price() | fcfa }}</span> }
+      <button type="button" class="btn btn-brand" (click)="save()" [disabled]="saving() || uploading() > 0">
+        <fa-icon [icon]="saving() ? i.faSpinner : i.faCheck" [animation]="saving() ? 'spin' : undefined" />
+        {{ saving() ? 'Enregistrement…' : (isEdit() ? 'Enregistrer' : 'Publier l\'article') }}
+      </button>
+    </div>
+  }
+</div>

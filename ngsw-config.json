@@ -29,13 +29,27 @@
   ],
   "dataGroups": [
     {
+      "name": "catalogue",
+      "urls": [
+        "https://*.supabase.co/rest/v1/products**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "timeout": "5s",
+        "maxSize": 20,
+        "maxAge": "7d"
+      }
+    },
+    {
       "name": "product-images",
       "urls": [
+        "https://*.supabase.co/storage/v1/object/public/**",
+        "https://images.unsplash.com/**",
         "https://cdn.dummyjson.com/**"
       ],
       "cacheConfig": {
         "strategy": "performance",
-        "maxSize": 500,
+        "maxSize": 800,
         "maxAge": "30d"
       }
     }

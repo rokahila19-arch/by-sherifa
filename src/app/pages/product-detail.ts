@@ -33,7 +33,7 @@ export class ProductDetail {
   /** Paramètre de route `:id` (withComponentInputBinding). */
   readonly id = input.required<string>();
 
-  private readonly catalog = inject(CatalogService);
+  protected readonly catalog = inject(CatalogService);
   private readonly cart = inject(CartService);
   private readonly history = inject(HistoryService);
   private readonly toast = inject(ToastService);
@@ -67,7 +67,7 @@ export class ProductDetail {
 
   protected readonly reviews = computed(() => {
     const p = this.product();
-    if (!p) return [];
+    if (!p || !p.reviews) return [];
     return Array.from({ length: 4 }, (_, i) => {
       const k = (p.id + i * 3) % 97;
       return {
