@@ -17,7 +17,7 @@ npm start          # http://localhost:4200
 npm run deploy
 ```
 
-Compile l'application avec la bonne `base-href` et publie `dist/stock-chine/browser` sur la branche `gh-pages`.
+Compile l'application (base-href `/by-sherifa/`) et publie `dist/stock-chine/browser` sur la branche `gh-pages` (voir `scripts/deploy-gh-pages.mjs`).
 Site : https://rokahila19-arch.github.io/by-sherifa/
 
 ## Modifier le catalogue
