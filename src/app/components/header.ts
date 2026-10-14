@@ -17,7 +17,7 @@ import * as icons from '../icons';
       <div class="container topbar-inner">
         <span><fa-icon [icon]="i.faTruckFast" /> Import direct Chine <fa-icon [icon]="i.faArrowRight" /> Burkina Faso</span>
         <span class="phones">
-          <a href="tel:{{ shop.phoneBF.replaceAll(' ', '') }}"><fa-icon [icon]="i.faWhatsapp" /> BF {{ shop.phoneBF }}</a>
+          <a href="https://wa.me/{{ shop.whatsappBF }}" target="_blank" rel="noopener"><fa-icon [icon]="i.faWhatsapp" /> BF {{ shop.phoneBF }}</a>
           <a href="tel:{{ shop.phoneCN.replaceAll(' ', '') }}"><fa-icon [icon]="i.faWhatsapp" /> CN {{ shop.phoneCN }}</a>
         </span>
       </div>

@@ -80,7 +80,7 @@ const FREE_SHIPPING_FROM = 50000;
               <dt class="tot">Total</dt><dd class="tot">{{ total() | fcfa }}</dd>
             </dl>
             <a class="btn btn-wa btn-block" [href]="orderLink()" target="_blank" rel="noopener" (click)="ordered.set(true)"><fa-icon [icon]="i.faWhatsapp" /> Commander via WhatsApp</a>
-            <p class="hint">Votre commande sera envoyée à {{ shop.phoneBF }}. Paiement Orange Money, Moov Money ou à la livraison.</p>
+            <p class="hint">Votre commande sera envoyée à {{ shop.phoneBF }}. Paiement par Orange Money au {{ shop.orangeMoney }} ou à la livraison.</p>
             @if (ordered()) {
               <button type="button" class="btn btn-outline btn-block" (click)="cart.clear(); ordered.set(false)">Commande envoyée — vider le panier</button>
             }
@@ -161,6 +161,8 @@ export class Cart {
       `Nom : ${this.name() || '-'}`,
       `Téléphone : ${this.phone() || '-'}`,
       `Adresse : ${this.address() || '-'}`,
+      '',
+      `Paiement Orange Money : ${SHOP.orangeMoney}`,
     ].join('\n');
     return whatsappLink(msg);
   });

@@ -31,9 +31,9 @@ import * as icons from '../icons';
         </div>
         <div>
           <h4>Contact</h4>
-          <a href="tel:+22602739392"><fa-icon [icon]="i.faPhone" /> Burkina : {{ shop.phoneBF }}</a>
+          <a href="tel:+{{ shop.whatsappBF }}"><fa-icon [icon]="i.faPhone" /> Burkina : {{ shop.phoneBF }}</a>
           <a href="tel:+8618339267415"><fa-icon [icon]="i.faPhone" /> Chine : {{ shop.phoneCN }}</a>
-          <p class="pay"><fa-icon [icon]="i.faMoneyBillWave" /> Paiement : Orange Money · Moov Money · Espèces à la livraison</p>
+          <p class="pay"><fa-icon [icon]="i.faMoneyBillWave" /> Paiement : Orange Money ({{ shop.orangeMoney }}) · Espèces à la livraison</p>
         </div>
       </div>
       <div class="copy">© {{ year }} Stock Chine by Cherifa — Tous droits réservés</div>

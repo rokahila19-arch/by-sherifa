@@ -1,9 +1,11 @@
 export const SHOP = {
   name: 'Stock Chine',
   owner: 'by Cherifa',
-  phoneBF: '+226 02 73 93 92',
+  phoneBF: '+226 57 49 77 71',
+  /** Numéro Orange Money (paiements). */
+  orangeMoney: '+226 57 49 77 71',
   phoneCN: '+86 183 3926 7415',
-  whatsappBF: '22602739392',
+  whatsappBF: '22657497771',
   whatsappCN: '8618339267415',
 };
 

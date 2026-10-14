@@ -50,7 +50,7 @@ import * as icons from '../icons';
         <ol class="steps">
           <li><b>Choisissez</b> vos articles et ajoutez-les au panier.</li>
           <li><b>Envoyez</b> votre commande via WhatsApp en un clic.</li>
-          <li><b>Payez</b> par Orange Money, Moov Money ou à la livraison.</li>
+          <li><b>Payez</b> par Orange Money au <b>{{ shop.orangeMoney }}</b> ou à la livraison.</li>
           <li><b>Recevez</b> votre colis à Ouaga en 24–48h.</li>
         </ol>
         <p class="note">Vous cherchez un article qui n'est pas en ligne ? Envoyez-nous une photo sur WhatsApp, nous le trouvons pour vous en Chine.</p>

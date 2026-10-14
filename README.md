@@ -2,7 +2,7 @@
 
 Boutique de mode en ligne (PWA Angular) : hoodies et pulls oversize, cargos, jeans, t-shirts neutres, robes, vestes, ensembles, sneakers et accessoires importés de Chine.
 
-Contact : +226 02 73 93 92 / +86 183 3926 7415
+Contact : +226 57 49 77 71 (WhatsApp & Orange Money) / +86 183 3926 7415
 
 ## Développement
 

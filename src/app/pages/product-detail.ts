@@ -7,7 +7,7 @@ import { CatalogService } from '../services/catalog.service';
 import { FavoritesService } from '../services/favorites.service';
 import { FcfaPipe } from '../services/fcfa.pipe';
 import { HistoryService } from '../services/history.service';
-import { whatsappLink } from '../services/shop-info';
+import { SHOP, whatsappLink } from '../services/shop-info';
 import { ToastService } from '../services/toast.service';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import * as icons from '../icons';
@@ -40,6 +40,7 @@ export class ProductDetail {
   private readonly router = inject(Router);
   protected readonly favs = inject(FavoritesService);
   protected readonly i = icons;
+  protected readonly shop = SHOP;
 
   protected readonly product = computed(() => this.catalog.getProduct(Number(this.id())));
   protected readonly category = computed(() => this.catalog.getCategory(this.product()?.category));

@@ -49,7 +49,7 @@ const PAGE_SIZE = 20;
       <div class="perks">
         <span><fa-icon [icon]="i.faTruckFast" /> Livraison Ouaga & Bobo</span>
         <span><fa-icon [icon]="i.faBoxesStacked" /> Prix de gros dès 10 pcs</span>
-        <span><fa-icon [icon]="i.faMoneyBillWave" /> Orange & Moov Money</span>
+        <span><fa-icon [icon]="i.faMoneyBillWave" /> Paiement Orange Money</span>
         <span><fa-icon [icon]="i.faCircleCheck" /> Qualité vérifiée</span>
       </div>
 
