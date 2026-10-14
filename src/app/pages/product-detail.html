@@ -1,0 +1,188 @@
+@if (product(); as p) {
+  <div class="container page">
+    <nav class="crumbs">
+      <a routerLink="/">Accueil</a> ›
+      <a [routerLink]="['/categorie', p.category]">{{ category()?.name }}</a> ›
+      <span>{{ p.title }}</span>
+    </nav>
+
+    <div class="layout">
+      <!-- Galerie -->
+      <section class="gallery">
+        <div class="main">
+          <img [src]="p.images[imageIdx()]" [alt]="p.title" />
+          @if (discount()) { <span class="badge off">-{{ discount() }}%</span> }
+          <span class="counter">{{ imageIdx() + 1 }}/{{ p.images.length }}</span>
+          @if (p.images.length > 1) {
+            <button type="button" class="nav prev" aria-label="Image précédente"
+              (click)="imageIdx.set((imageIdx() - 1 + p.images.length) % p.images.length)"><fa-icon [icon]="i.faChevronLeft" /></button>
+            <button type="button" class="nav next" aria-label="Image suivante"
+              (click)="imageIdx.set((imageIdx() + 1) % p.images.length)"><fa-icon [icon]="i.faChevronRight" /></button>
+          }
+        </div>
+        @if (p.images.length > 1) {
+          <div class="thumbs">
+            @for (img of p.images; track img; let n = $index) {
+              <button type="button" [class.on]="n === imageIdx()" (click)="imageIdx.set(n)" [attr.aria-label]="'Image ' + (n + 1)">
+                <img [src]="img" alt="" loading="lazy" />
+              </button>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Infos -->
+      <section class="info">
+        <div class="tags">
+          @if (p.flash) { <span class="badge"><fa-icon [icon]="i.faBolt" /> Vente flash</span> }
+          @if (p.isNew) { <span class="badge badge-new">Nouveau</span> }
+          @if (p.sold > 3000) { <span class="badge badge-gold"><fa-icon [icon]="i.faFire" /> Top vente</span> }
+        </div>
+        <h1>{{ p.title }}</h1>
+        <div class="rating">
+          <span class="stars">@for (s of stars(p.rating); track $index) { <fa-icon [icon]="s" /> }</span>
+          <b>{{ p.rating }}</b>
+          <button type="button" class="link" (click)="tab.set('avis')">({{ p.reviews }} avis)</button>
+          <span class="sep">|</span> {{ p.sold }} vendus
+          @if (p.brand) { <span class="sep">|</span> Marque : <b>{{ p.brand }}</b> }
+        </div>
+
+        <div class="price-box">
+          <span class="price big">{{ unitPrice() | fcfa }}</span>
+          @if (p.oldPrice) { <span class="old-price">{{ p.oldPrice | fcfa }}</span> }
+          @if (discount()) { <span class="save">Économisez {{ discount() }}%</span> }
+        </div>
+
+        <!-- Tarifs de gros (style Alibaba) -->
+        <div class="tiers">
+          @for (t of p.wholesale; track t.min; let last = $last; let n = $index) {
+            <div class="tier" [class.on]="unitPrice() === t.price">
+              <b>{{ t.price | fcfa }}</b>
+              <span>{{ last ? '≥ ' + t.min : t.min + ' – ' + (p.wholesale[n + 1].min - 1) }} pcs</span>
+            </div>
+          }
+        </div>
+
+        @if (p.colors?.length) {
+          <div class="opt-group">
+            <h4>Couleur : <span>{{ color() }}</span></h4>
+            <div class="swatches">
+              @for (c of p.colors; track c.name) {
+                <button type="button" class="swatch" [class.on]="color() === c.name" [style.background]="c.hex"
+                  [attr.aria-label]="c.name" [title]="c.name" (click)="color.set(c.name)"></button>
+              }
+            </div>
+          </div>
+        }
+
+        @if (p.sizes?.length) {
+          <div class="opt-group" [class.err]="needSize() && !size()">
+            <h4>Taille : <span>{{ size() ?? 'Choisir' }}</span></h4>
+            <div class="sizes">
+              @for (s of p.sizes; track s) {
+                <button type="button" class="chip" [class.active]="size() === s" (click)="size.set(s)">{{ s }}</button>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="opt-group">
+          <h4>Quantité</h4>
+          <div class="qty-row">
+            <div class="qty">
+              <button type="button" (click)="setQty(qty() - 1)" aria-label="Diminuer"><fa-icon [icon]="i.faMinus" /></button>
+              <input type="number" [value]="qty()" (change)="setQty(+$any($event.target).value)" min="1" [max]="p.stock" aria-label="Quantité" />
+              <button type="button" (click)="setQty(qty() + 1)" aria-label="Augmenter"><fa-icon [icon]="i.faPlus" /></button>
+            </div>
+            <span class="stock">{{ p.stock }} en stock</span>
+          </div>
+          <p class="total">Total : <b>{{ unitPrice() * qty() | fcfa }}</b></p>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-outline" (click)="addToCart()"><fa-icon [icon]="i.faCartShopping" /> Ajouter au panier</button>
+          <button type="button" class="btn btn-brand" (click)="buyNow()">Acheter maintenant</button>
+        </div>
+        <div class="actions secondary">
+          <a class="btn btn-wa" [href]="whatsapp()" target="_blank" rel="noopener"><fa-icon [icon]="i.faWhatsapp" /> Commander via WhatsApp</a>
+          <button type="button" class="icon-btn" [class.on]="favs.has(p.id)" (click)="favs.toggle(p.id)" aria-label="Favori"><fa-icon [icon]="favs.has(p.id) ? i.faHeart : i.faHeartOutline" /></button>
+          <button type="button" class="icon-btn" (click)="share()" aria-label="Partager"><fa-icon [icon]="i.faShareNodes" /></button>
+        </div>
+
+        <ul class="perks">
+          <li><fa-icon [icon]="i.faTruckFast" /> <b>Livraison</b> : 24–48h à Ouagadougou, 3–5 jours autres villes</li>
+          <li><fa-icon [icon]="i.faPlane" /> <b>Commande spéciale Chine</b> : 2–3 semaines (fret aérien)</li>
+          <li><fa-icon [icon]="i.faMoneyBillWave" /> <b>Paiement</b> : Orange Money, Moov Money ou à la livraison</li>
+          <li><fa-icon [icon]="i.faRotateLeft" /> <b>Échange</b> possible sous 48h si article non conforme</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Onglets -->
+    <section class="section tabs">
+      <div class="tab-head" role="tablist">
+        <button type="button" role="tab" [class.on]="tab() === 'desc'" (click)="tab.set('desc')">Description</button>
+        <button type="button" role="tab" [class.on]="tab() === 'specs'" (click)="tab.set('specs')">Caractéristiques</button>
+        <button type="button" role="tab" [class.on]="tab() === 'avis'" (click)="tab.set('avis')">Avis ({{ p.reviews }})</button>
+      </div>
+      @switch (tab()) {
+        @case ('desc') {
+          <p class="desc">{{ p.description }}</p>
+          <div class="desc-imgs">
+            @for (img of p.images; track img) { <img [src]="img" [alt]="p.title" loading="lazy" /> }
+          </div>
+        }
+        @case ('specs') {
+          <table class="specs">
+            <tr><th>Référence</th><td>SC-{{ p.id }}</td></tr>
+            <tr><th>Catégorie</th><td>{{ category()?.name }}</td></tr>
+            @if (p.brand) { <tr><th>Marque</th><td>{{ p.brand }}</td></tr> }
+            @if (p.colors?.length) { <tr><th>Couleurs</th><td>{{ p.colors!.length }} disponibles</td></tr> }
+            @if (p.sizes?.length) { <tr><th>Tailles</th><td>{{ p.sizes!.join(', ') }}</td></tr> }
+            <tr><th>Commande min.</th><td>{{ p.minOrder }} pièce</td></tr>
+            <tr><th>Origine</th><td>Chine</td></tr>
+            <tr><th>Stock</th><td>{{ p.stock }} unités</td></tr>
+          </table>
+        }
+        @case ('avis') {
+          <div class="review-summary">
+            <b class="score">{{ p.rating }}</b>
+            <div><span class="stars">@for (s of stars(p.rating); track $index) { <fa-icon [icon]="s" /> }</span><br />{{ p.reviews }} avis vérifiés</div>
+          </div>
+          @for (r of reviews(); track $index) {
+            <article class="review">
+              <header><b>{{ r.name }}</b> <span class="stars">@for (s of stars(r.rating); track $index) { <fa-icon [icon]="s" /> }</span> <small>{{ r.date }}</small></header>
+              @if (r.variant) { <small class="variant">{{ r.variant }}</small> }
+              <p>{{ r.text }}</p>
+            </article>
+          }
+        }
+      }
+    </section>
+
+    @if (similar().length) {
+      <section class="section">
+        <div class="section-head"><h2>Articles similaires</h2><a [routerLink]="['/categorie', p.category]">Voir tout ›</a></div>
+        <div class="h-scroll">
+          @for (s of similar(); track s.id) { <app-product-card [product]="s" /> }
+        </div>
+      </section>
+    }
+  </div>
+
+  <!-- Barre d'achat fixe (mobile) -->
+  <div class="buybar">
+    <a class="wa" [href]="whatsapp()" target="_blank" rel="noopener" aria-label="WhatsApp"><fa-icon [icon]="i.faWhatsapp" /></a>
+    <button type="button" class="btn btn-dark" (click)="addToCart()">Ajouter au panier</button>
+    <button type="button" class="btn btn-brand" (click)="buyNow()">Acheter</button>
+  </div>
+} @else {
+  <div class="container page">
+    <div class="empty">
+      <div class="emoji"><fa-icon [icon]="i.faFaceFrown" /></div>
+      <h3>Article introuvable</h3>
+      <p>Cet article n'existe plus ou a été retiré.</p>
+      <a routerLink="/" class="btn btn-dark">Retour à l'accueil</a>
+    </div>
+  </div>
+}

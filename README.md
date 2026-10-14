@@ -1,0 +1,28 @@
+# Stock Chine by Cherifa
+
+Boutique de mode en ligne (PWA Angular) : hoodies et pulls oversize, cargos, jeans, t-shirts neutres, robes, vestes, ensembles, sneakers et accessoires importés de Chine.
+
+Contact : +226 02 73 93 92 / +86 183 3926 7415
+
+## Développement
+
+```bash
+npm install
+npm start          # http://localhost:4200
+```
+
+## Mise en ligne (GitHub Pages)
+
+```bash
+npm run deploy
+```
+
+Compile l'application avec la bonne `base-href` et publie `dist/stock-chine/browser` sur la branche `gh-pages`.
+Site : https://jonatecht.github.io/stock-chine-by-cherifa/
+
+## Modifier le catalogue
+
+- Articles : `src/app/data/products.data.ts`
+- Catégories : `src/app/data/categories.data.ts`
+- Numéros / WhatsApp : `src/app/services/shop-info.ts`
+- Icônes (Font Awesome) : `src/app/icons.ts`
