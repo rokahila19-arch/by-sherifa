@@ -1,0 +1,1 @@
+var e={name:"Stock Chine",owner:"by Cherifa",phoneBF:"+226 57 49 77 71",orangeMoney:"+226 57 49 77 71",phoneCN:"+86 183 3926 7415",whatsappBF:"22657497771",whatsappCN:"8618339267415"};function p(n,t=e.whatsappBF){return`https://wa.me/${t}?text=${encodeURIComponent(n)}`}export{e as a,p as b};

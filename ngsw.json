@@ -1,0 +1,125 @@
+{
+  "configVersion": 1,
+  "timestamp": 1791997290130,
+  "index": "/by-sherifa/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/by-sherifa/chunk-2RXEVEYM.js",
+        "/by-sherifa/chunk-46AI3WQB.js",
+        "/by-sherifa/chunk-4VUSVJ7Y.js",
+        "/by-sherifa/chunk-5PBDASYI.js",
+        "/by-sherifa/chunk-COGVI34Y.js",
+        "/by-sherifa/chunk-COWW6O6R.js",
+        "/by-sherifa/chunk-FT3BIL5A.js",
+        "/by-sherifa/chunk-FVYZM3QR.js",
+        "/by-sherifa/chunk-HRR55V25.js",
+        "/by-sherifa/chunk-KBMGVF7D.js",
+        "/by-sherifa/chunk-KDMOCOPD.js",
+        "/by-sherifa/chunk-MKWA4QYS.js",
+        "/by-sherifa/chunk-MY5CQZJV.js",
+        "/by-sherifa/chunk-NP7A6NBD.js",
+        "/by-sherifa/chunk-RVFB3ORL.js",
+        "/by-sherifa/chunk-SAP5RMGO.js",
+        "/by-sherifa/chunk-T6TK4VYO.js",
+        "/by-sherifa/favicon.ico",
+        "/by-sherifa/index.html",
+        "/by-sherifa/main-DYXDEJXL.js",
+        "/by-sherifa/manifest.webmanifest",
+        "/by-sherifa/styles-CHRUOWNS.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/by-sherifa/icons/icon-128x128.png",
+        "/by-sherifa/icons/icon-144x144.png",
+        "/by-sherifa/icons/icon-152x152.png",
+        "/by-sherifa/icons/icon-192x192.png",
+        "/by-sherifa/icons/icon-384x384.png",
+        "/by-sherifa/icons/icon-512x512.png",
+        "/by-sherifa/icons/icon-72x72.png",
+        "/by-sherifa/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "product-images",
+      "patterns": [
+        "https:\\/\\/cdn\\.dummyjson\\.com\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 500,
+      "maxAge": 2592000000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/by-sherifa/chunk-2RXEVEYM.js": "1e2ade46aabc843e00d0bb06aa398c9edaaf88c2",
+    "/by-sherifa/chunk-46AI3WQB.js": "fefc568a3b82ac3efaa9732cbbd338d143b742de",
+    "/by-sherifa/chunk-4VUSVJ7Y.js": "7a14913734e630ca2ff8f2e701313dacdfe69c03",
+    "/by-sherifa/chunk-5PBDASYI.js": "5791d0888bcb37430f6638c5a7eabb1f1ebe06fc",
+    "/by-sherifa/chunk-COGVI34Y.js": "3e9d23fb37ef5806e743d127e995aaea25811c49",
+    "/by-sherifa/chunk-COWW6O6R.js": "35d6e90ac49157d8c8385f8b46c1e9011f0753df",
+    "/by-sherifa/chunk-FT3BIL5A.js": "241cf01754ec1b6ad9b4e84c2b7a0af825d347e4",
+    "/by-sherifa/chunk-FVYZM3QR.js": "432052b73575b2513426951b5eeaab8fbc18444a",
+    "/by-sherifa/chunk-HRR55V25.js": "1f6b6745d520f0d29d11259824942ae89d06e61c",
+    "/by-sherifa/chunk-KBMGVF7D.js": "362a4da922b3d2f49605bd07afeb6740b97837df",
+    "/by-sherifa/chunk-KDMOCOPD.js": "2be31f43dd6936871abeb1ac8add903055ecfa7f",
+    "/by-sherifa/chunk-MKWA4QYS.js": "7c81f53a88da2b98daac303f7f237982d1b0a770",
+    "/by-sherifa/chunk-MY5CQZJV.js": "5533e574f36a170c6837ca890c5dbdbd58e25a88",
+    "/by-sherifa/chunk-NP7A6NBD.js": "cfef336bd7fc01857e11486923b6fcce24e8966e",
+    "/by-sherifa/chunk-RVFB3ORL.js": "f2e02f325facd2dc339747efbea5a912aac93868",
+    "/by-sherifa/chunk-SAP5RMGO.js": "7e66a8309ae5af93cfbfdc69f07eaad14de5fa67",
+    "/by-sherifa/chunk-T6TK4VYO.js": "af3a449e04578bb9209c66fc4daa0aa8ed4c340d",
+    "/by-sherifa/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/by-sherifa/icons/icon-128x128.png": "880ce7261f7fdc7ca3b6a2f1697ffbfc6c293162",
+    "/by-sherifa/icons/icon-144x144.png": "4ff2868838b4409fb9fd784b51c540beaf61cf11",
+    "/by-sherifa/icons/icon-152x152.png": "53edd0ad4d7226ec3d9ec925ac9a2a05d9a6f743",
+    "/by-sherifa/icons/icon-192x192.png": "1a1045966e000505d15551d5a1763289e4307c6b",
+    "/by-sherifa/icons/icon-384x384.png": "449a5b2ba3b43423c87d5ad374c66862224468da",
+    "/by-sherifa/icons/icon-512x512.png": "af34849e39b225150ca94593072ebb855913798b",
+    "/by-sherifa/icons/icon-72x72.png": "12826907b6d73437cd9fe3b490f6ce9012e23faa",
+    "/by-sherifa/icons/icon-96x96.png": "d1139efac4bf5b3effa0eca709e9b400df9ea3c2",
+    "/by-sherifa/index.html": "99a381b656b69c18bde3ee278962b073f184f871",
+    "/by-sherifa/main-DYXDEJXL.js": "4c752ee1e9bee90ebf98c2c5429adbdb2b2f5c55",
+    "/by-sherifa/manifest.webmanifest": "b03f5b122b1f30aa4f336c079bb40c6cb1dc7ecd",
+    "/by-sherifa/styles-CHRUOWNS.css": "0dadc08d1aadba45caf6a8b570311fe796fc87c0"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
